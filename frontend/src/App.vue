@@ -1,28 +1,23 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <el-config-provider namespace="ep">
+    <BaseHeader />
+    <div class="flex main-container">
+      <!-- <BaseSide /> -->
+      <div w="full" py="4">
+        <Logos my="4" />
+        <HelloWorld msg="Hello Vue 3 + Element Plus + Vite" />
+      </div>
+    </div>
+  </el-config-provider>
 </template>
 
-<script>
-export default {
-  name: 'App'
-}
-</script>>
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
+#app {
+  text-align: center;
+  color: var(--ep-text-color-primary);
 }
-.clearfix {
-  zoom: 1;
-}
-.clearfix:after {
-  content: ".";
-  display: block;
-  visibility: hidden;
-  height: 0;
-  clear: both;
+
+.main-container {
+  height: calc(100vh - var(--ep-menu-item-height) - 3px);
 }
 </style>
