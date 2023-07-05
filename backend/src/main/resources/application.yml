@@ -4,7 +4,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/acm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     username: root
-    password: 123456
+    password: root
+    hikari:
+      connection-timeout:30000
   #若不存在表，项目启动时新建表
   sql:
     init:
@@ -27,4 +29,4 @@ config:
 
 #服务器启动端口配置
 server:
-  port: 8089
+  port: 9000
