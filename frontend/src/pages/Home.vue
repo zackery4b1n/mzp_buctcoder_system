@@ -1,7 +1,7 @@
 <template>
     <div>
       <h1>Hello, World!</h1>
-      <p>This is the HelloWorldVue component.</p>
+      <p>This is the Page1</p>
     </div>
 </template>
   

@@ -62,4 +62,18 @@ export default defineConfig({
       ]
     }),
   ],
+  server: {
+    open: true,
+    host: 'localhost',
+    port: 8080,
+    https: false,
+    proxy: {
+      '/stu/info': {
+        target: 'http://127.0.0.1:8089/',
+        ws: true,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/stu\/info/, '')
+      }
+    }
+  }
 })
