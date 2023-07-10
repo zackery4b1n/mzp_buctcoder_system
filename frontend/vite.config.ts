@@ -69,7 +69,7 @@ export default defineConfig({
     https: false,
     proxy: {
       '/stu/info': {
-        target: 'http://127.0.0.1:8089/',
+        target: 'http://49.232.228.24:12345//',
         ws: true,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/stu\/info/, '')

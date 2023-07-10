@@ -1,14 +1,13 @@
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-    <a href="https://element-plus.org/" target="_blank">
-      <img src="/element-plus-logo-small.svg" class="logo element-plus" alt="Element Plus logo" />
-    </a>
+  <div class="common-layout">
+    <el-container>
+      <el-container>
+        <el-header>Header</el-header>
+        <el-main>Main</el-main>
+        <el-footer>Footer</el-footer>
+      </el-container>
+      <el-aside width="200px">Aside</el-aside>
+    </el-container>
   </div>
 </template>
 
