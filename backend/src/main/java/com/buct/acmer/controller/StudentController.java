@@ -102,5 +102,17 @@ public class StudentController {
         }
 
     }
+    @ApiOperation("竞赛信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentPage",value = "当前页数",required = true),
+            @ApiImplicitParam(name = "pageSize",value = "页面大小",required = true)
+    })
+    @GetMapping("/test/{currentPage}/{pageSize}")
+    public PublicProperty<Page<Student>> selectall(@PathVariable("currentPage") Integer currentPage,
+                                                   @PathVariable("pageSize") Integer pageSize){
+
+        Page<Student> page = new Page<>(currentPage,pageSize);
+        return new PublicProperty(200,"success",studentService.page(page));
+    }
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "返回接口")
-public class PublicProperty<T> {
+public class  PublicProperty<T> {
 
     @ApiModelProperty(value = "状态码")
     private Integer code;
