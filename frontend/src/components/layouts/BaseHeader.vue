@@ -10,8 +10,8 @@ import { toggleDark } from "~/composables";
     <RouterLink to="/1" class="custom-link">
       <el-menu-item index="2" class="menu-root-item">首页2</el-menu-item>
     </RouterLink>
-    <RouterLink to="/2" class="custom-link">
-      <el-menu-item index="3" class="menu-root-item">首页3</el-menu-item>
+    <RouterLink to="/SelectAll" class="custom-link">
+      <el-menu-item index="3" class="menu-root-item">所有数据</el-menu-item>
     </RouterLink>
     <el-menu-item h="full" @click="toggleDark()" class="menu-root-item">
       <button
@@ -28,7 +28,7 @@ import { toggleDark } from "~/composables";
       <el-menu-item index="5" class="menu-root-item">首页5</el-menu-item>
     </RouterLink>
     <RouterLink to="/StuInfo" class="custom-link">
-      <el-menu-item index="6" class="menu-root-item">首页6</el-menu-item>
+      <el-menu-item index="6" class="menu-root-item">学生信息</el-menu-item>
     </RouterLink>   
   </el-menu>
 </template>

@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <el-container class="container">
+    <el-card class="box-card">
     <div style="margin-top: 2%;margin-bottom: 1%">
       <el-button type="primary" @click="addStu">新增</el-button>
     </div>
@@ -54,7 +55,8 @@
         <el-button @click="showDialog=false"> 取消</el-button>
       </span>
     </el-dialog>
-  </div>
+    </el-card>
+  </el-container>
 </template>
 
 <script>
@@ -153,45 +155,18 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  background-color: white;
   box-sizing: border-box;
   border-bottom: #eceef0 solid 2px;
-  padding: 0px 18px;
-}
-.headBox {
-  width: 100%;
-  height: 75px;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-.headBox p {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.headBox p span {
-  display: inline-block;
-  width: 70px;
-  margin-right: 5px;
-  color: #7a7d7f;
-  font-weight: bold;
-}
-.headBox p:nth-child(1) span,
-.headBox p:nth-child(2) span {
-  margin-right: -10px;
-}
-.headBox p:nth-child(2) span,
-.headBox p:nth-child(3) span,
-.headBox button {
-  margin-left: 7px;
-}
-.headBox button span {
-  margin-left: 5px;
+  padding: 0px;
 }
 .container .block {
   display: flex;
   justify-content: center;
   margin-top: 5px;
+}
+.box-card {
+  margin: 2%;
+  width: 100%;
+  border-radius: 20px
 }
 </style>

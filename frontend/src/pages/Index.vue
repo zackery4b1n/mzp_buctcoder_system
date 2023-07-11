@@ -1,11 +1,11 @@
 <template>
   <el-container class="container">
     <el-container class="left-section">
-      <el-card class="box-card-l">
+      <el-card class="box-card-l" v-loading="loading">
         <template #header>
           <div class="card-header">
-            <span>Card name</span>
-            <el-button class="button" text>Operation button</el-button>
+            <span>已结束的比赛</span>
+            <el-button class="button" @click="reflesh" text>刷新</el-button>
           </div>
         </template>
         <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
@@ -13,8 +13,8 @@
       <el-card class="box-card-l">
         <template #header>
           <div class="card-header">
-            <span>Card name</span>
-            <el-button class="button" text>Operation button</el-button>
+            <span>即将到来的比赛</span>
+            <el-button class="button" text>刷新</el-button>
           </div>
         </template>
         <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
@@ -24,12 +24,21 @@
       <el-card class="box-card-r">
           <template #header>
             <div class="card-header">
-              <span>Card name</span>
-              <el-button class="button" text>Operation button</el-button>
+              <span>codeforces</span>
+              <el-button class="button" text>刷新</el-button>
             </div>
           </template>
           <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
-        </el-card>
+      </el-card>
+      <el-card class="box-card-r">
+          <template #header>
+            <div class="card-header">
+              <span>atcoder</span>
+              <el-button class="button" text>刷新</el-button>
+            </div>
+          </template>
+          <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
+      </el-card>
     </el-container>
   </el-container>
 </template>
@@ -43,8 +52,15 @@ export default {
         { id: 2, name: 'Item 2', description: 'Description for Item 2' },
         { id: 3, name: 'Item 3', description: 'Description for Item 3' },
         // 添加更多列表项...
-      ]
+      ],
+      loading: false
     };
+  },
+  method:{
+    reflesh(){
+      this.loading = true
+      return
+    }
   }
 };
 </script>
@@ -99,11 +115,14 @@ li {
 }
 
 .box-card-l {
-  margin-bottom: 5%;
+  margin-bottom: 30px;
   width: 800px;
+  border-radius: 20px
 }
 
 .box-card-r {
   width: 400px;
+  margin-bottom: 30px;
+  border-radius: 20px
 }
 </style>

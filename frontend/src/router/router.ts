@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeVue from "../pages/Home.vue"
+import IndexVue from "../pages/Index.vue"
 import StuInfoVue from "../pages/StuInfo.vue"
 import StudentIndexVue from "../pages/StudentIndex.vue"
 import SelectAllVue from "../pages/SelectAll.vue"
@@ -11,8 +11,8 @@ const router = createRouter({
     routes: [
       {
         path: '/',
-        name: 'home',
-        component: HomeVue
+        name: 'index',
+        component: IndexVue
       },
       {
         path: '/1',
@@ -20,7 +20,7 @@ const router = createRouter({
         component: StudentIndexVue
       },
       {
-        path: '/2',
+        path: '/SelectAll',
         name: 'home2',
         component: SelectAllVue
       },
@@ -38,10 +38,6 @@ const router = createRouter({
         path: '/StuInfo',
         name: 'stuinfo',
         component: StuInfoVue
-        // route level code-splitting
-        // this generates a separate chunk (About.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        // component: () => import('../views/AboutView.vue')
       }
     ]
   })
