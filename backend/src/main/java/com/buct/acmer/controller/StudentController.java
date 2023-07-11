@@ -1,5 +1,8 @@
 package com.buct.acmer.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.buct.acmer.entity.Atcoder;
 import com.buct.acmer.entity.ContestInfo;
@@ -13,6 +16,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.List;
 
 /**
  * <p>
@@ -102,17 +113,62 @@ public class StudentController {
         }
 
     }
-    @ApiOperation("竞赛信息")
+    @ApiOperation("查询学生分数")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage",value = "当前页数",required = true),
             @ApiImplicitParam(name = "pageSize",value = "页面大小",required = true)
     })
-    @GetMapping("/test/{currentPage}/{pageSize}")
-    public PublicProperty<Page<Student>> selectall(@PathVariable("currentPage") Integer currentPage,
-                                                   @PathVariable("pageSize") Integer pageSize){
+    @GetMapping("/all/{currentPage}/{pageSize}")
+    public PublicProperty<Page<Student>> selectAll1(@PathVariable("currentPage") Integer currentPage,
+                                                   @PathVariable("pageSize") Integer pageSize) {
 
-        Page<Student> page = new Page<>(currentPage,pageSize);
-        return new PublicProperty(200,"success",studentService.page(page));
+        Page<Student> page = new Page<>(currentPage, pageSize);
+        Page<Student> studentPage = studentService.page(page);
+
+        List<Student> studentList = studentPage.getRecords();
+        for (Student student : studentList) {
+            String id = student.getStuCfId(); // 假设学生对象中有一个表示学生ID的属性，这里假设为stuId
+
+            // 构建请求URL
+            String apiUrl = "https://codeforces.com/api/user.info?handles=" + id;
+            try {
+                URL url = new URL(apiUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    StringBuilder response = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    reader.close();
+
+                    // 解析JSON响应，提取rating项并设置到学生对象中
+                    JSONObject jsonObject = new JSONObject(Boolean.parseBoolean(response.toString()));
+                    JSONArray resultArray = jsonObject.getJSONArray("result");
+                    if (resultArray.length() > 0) {
+                        int rating = resultArray.getJSONObject(0).getInteger("rating");
+                        student.setRating(rating); // 假设学生对象有一个表示分数的属性，这里假设为rating
+                    }
+                }
+                connection.disconnect();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+                // 处理异常情况
+            } catch (ProtocolException e) {
+                throw new RuntimeException(e);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return new PublicProperty<>(200, "success", studentPage);
     }
+
 
 }

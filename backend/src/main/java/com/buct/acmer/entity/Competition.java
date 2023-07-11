@@ -14,31 +14,17 @@ import lombok.Setter;
  * </p>
  *
  * @author BUCT
- * @since 2022-06-14
+ * @since 2023-07-11
  */
 @Getter
 @Setter
-@ApiModel(value = "Student对象", description = "")
-public class Student implements Serializable {
+@ApiModel(value = "Competition对象", description = "")
+public class Competition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "stu_no", type = IdType.INPUT)
     private String stuNo;
 
-    private String stuName;
 
-    private String stuClass;
-
-    private String stuAcId;
-
-    private String stuCfId;
-
-
-    public String getStuCfId() {
-        return stuCfId;
-    }
-
-    public void setRating(int rating) {
-    }
 }

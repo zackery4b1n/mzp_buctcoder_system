@@ -32,8 +32,8 @@ public class Main {
                         .controller("controller")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, projectPath + "/src/main/java/com/buct/acmer/mapper"))) // 设置 mapperXml 生成路径
                 .strategyConfig(builder -> builder
-                        .addInclude("codeforces") // 包含的表名或表名匹配规则
-                        .addInclude("aaa") // 包含的表名或表名匹配规则
+                        //.addInclude("codeforces") // 包含的表名或表名匹配规则
+                        .addInclude("student") // 包含的表名或表名匹配规则
                         .entityBuilder()
                         .enableLombok() // 启用 Lombok
                         .idType(IdType.INPUT) // 设置 ID 类型
