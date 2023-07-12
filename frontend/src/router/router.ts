@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import IndexVue from "../pages/Index.vue"
 import StuInfoVue from "../pages/StuInfo.vue"
-import StudentIndexVue from "../pages/StudentIndex.vue"
-import SelectAllVue from "../pages/SelectAll.vue"
-import HelloWorldVue from "../pages/HelloWorld.vue";
-import LogosVue from "../pages/Logos.vue";
+import GameInfoVue from "../pages/GameInfo.vue"
+import StuScoreVue from "../pages/StuScore.vue"
+// import StudentIndexVue from "../pages/StudentIndex.vue"
+// import SelectAllVue from "../pages/SelectAll.vue"
+import FigureVue from "../pages/Figure.vue";
+import AboutVue from "../pages/About.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,29 +17,29 @@ const router = createRouter({
         component: IndexVue
       },
       {
-        path: '/1',
-        name: 'home1',
-        component: StudentIndexVue
-      },
-      {
-        path: '/SelectAll',
-        name: 'home2',
-        component: SelectAllVue
-      },
-      {
-        path: '/3',
-        name: 'home3',
-        component: HelloWorldVue
-      },
-      {
-        path: '/4',
-        name: 'home4',
-        component: LogosVue
-      },
-      {
-        path: '/StuInfo',
-        name: 'stuinfo',
+        path: '/stuInfo',
+        name: 'stuInfo',
         component: StuInfoVue
+      },
+      {
+        path: '/gameInfo',
+        name: 'gameInfo',
+        component: GameInfoVue
+      },
+      {
+        path: '/stuScore',
+        name: 'stuScore',
+        component: StuScoreVue
+      },
+      {
+        path: '/figure',
+        name: 'figure',
+        component: FigureVue
+      },
+      {
+        path: '/about',
+        name: 'about',
+        component: AboutVue
       }
     ]
   })

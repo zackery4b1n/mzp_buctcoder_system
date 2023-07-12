@@ -1,40 +1,40 @@
 <template>
   <el-container class="container">
     <el-container class="left-section">
-      <el-card class="box-card-l" v-loading="loading">
+      <el-card class="box-card-l" v-loading="loading_1">
         <template #header>
           <div class="card-header">
             <span>已结束的比赛</span>
-            <el-button class="button" @click="reflesh" text>刷新</el-button>
+            <el-button class="button" @click="reflesh_1" text>刷新</el-button>
           </div>
         </template>
         <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
       </el-card>
-      <el-card class="box-card-l">
+      <el-card class="box-card-l" v-loading="loading_2">
         <template #header>
           <div class="card-header">
             <span>即将到来的比赛</span>
-            <el-button class="button" text>刷新</el-button>
+            <el-button class="button" @click="reflesh_2" text>刷新</el-button>
           </div>
         </template>
         <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
       </el-card>
     </el-container>
     <el-container class="right-section">
-      <el-card class="box-card-r">
+      <el-card class="box-card-r" v-loading="loading_3">
           <template #header>
             <div class="card-header">
               <span>codeforces</span>
-              <el-button class="button" text>刷新</el-button>
+              <el-button class="button" @click="reflesh_3" text>刷新</el-button>
             </div>
           </template>
           <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
       </el-card>
-      <el-card class="box-card-r">
+      <el-card class="box-card-r" v-loading="loading_4">
           <template #header>
             <div class="card-header">
               <span>atcoder</span>
-              <el-button class="button" text>刷新</el-button>
+              <el-button class="button" @click="reflesh_4" text>刷新</el-button>
             </div>
           </template>
           <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
@@ -53,13 +53,28 @@ export default {
         { id: 3, name: 'Item 3', description: 'Description for Item 3' },
         // 添加更多列表项...
       ],
-      loading: false
+      loading_1: false,
+      loading_2: false,
+      loading_3: false,
+      loading_4: false,
     };
   },
-  method:{
-    reflesh(){
-      this.loading = true
-      return
+  methods:{
+    reflesh_1(){
+      this.loading_1 = true
+      setTimeout(() => {this.loading_1 = false}, 300);
+    },
+    reflesh_2(){
+      this.loading_2 = true
+      setTimeout(() => {this.loading_2 = false}, 300);
+    },
+    reflesh_3(){
+      this.loading_3 = true
+      setTimeout(() => {this.loading_3 = false}, 300);
+    },
+    reflesh_4(){
+      this.loading_4 = true
+      setTimeout(() => {this.loading_4 = false}, 300);
     }
   }
 };
@@ -124,5 +139,9 @@ li {
   width: 400px;
   margin-bottom: 30px;
   border-radius: 20px
+}
+
+.card-header{
+  height:30px
 }
 </style>

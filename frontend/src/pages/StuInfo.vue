@@ -1,34 +1,39 @@
 <template>
   <el-container class="container">
     <el-card class="box-card">
-    <div style="margin-top: 2%;margin-bottom: 1%">
-      <el-button type="primary" @click="addStu">新增</el-button>
-    </div>
-    <el-table :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" stripe border style="width: 100%" v-loading="loading">
-      <el-table-column prop="stuNo" label="stuNo" width="120"></el-table-column>
-      <el-table-column prop="stuName" label="stuName" ></el-table-column>
-      <el-table-column prop="stuClass" label="stuClass" ></el-table-column>
-      <el-table-column prop="stuAcId" label="stuAcId" ></el-table-column>
-      <el-table-column prop="stuCfId" label="stuCfId" ></el-table-column>
-      <el-table-column  label="操作" width="100px">
-      <template slot-scope="scope">
-        <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
-        <el-button @click="handleDel(scope.row)" type="text" size="small">删除</el-button>
+      <template #header>
+        <div class="card-header">
+          <span class="ml-3 w-35 text-gray-600 inline-flex items-center" style="flex:15">用户列表</span>
+          <el-input v-model="input" placeholder="请输入" style="flex:8"/>
+          <el-button type="primary" style="flex:1">搜索</el-button>
+          <el-button type="primary" style="flex:1" @click="addStu">新增用户</el-button>
+        </div>
       </template>
-      </el-table-column>
-    </el-table>
-    <div class="block">
-      <el-pagination
-        layout="prev, pager, next"
-        :total="totalNum"
-        :page-size="pageSize"
-        :current-page="currentPage"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
-    </div>
+      <el-table :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" stripe border style="width: 100%" v-loading="loading">
+        <el-table-column prop="stuNo" label="stuNo" width="120"></el-table-column>
+        <el-table-column prop="stuName" label="stuName" ></el-table-column>
+        <el-table-column prop="stuClass" label="stuClass" ></el-table-column>
+        <el-table-column prop="stuAcId" label="stuAcId" ></el-table-column>
+        <el-table-column prop="stuCfId" label="stuCfId" ></el-table-column>
+        <el-table-column  label="操作" width="250px">
+          <el-row>
+            <el-button @click="handleEdit(scope.row)" type="primary" style="width:15px">编辑</el-button>
+            <el-button @click="handleDel(scope.row)" type="primary" style="width:15px">删除</el-button>
+          </el-row>
+        </el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          layout="prev, pager, next"
+          :total="totalNum"
+          :page-size="pageSize"
+          :current-page="currentPage"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
     <el-dialog
-      :visible.sync="showDialog"
-      :title="dialogtitle">
+      v-model="dialogVisible"
+      :title="dialogtitle" style="border-radius: 30px;">
       <el-form
         label-width="120px"
         ref="ruleFormRef"
@@ -64,13 +69,13 @@ import axios from 'axios'
 export default {
   data () {
     return {
-      pageSize: 7, // 表示一页多少条数据
+      pageSize: 8, // 表示一页多少条数据
       totalNum: 0,
       currentPage: 1,
       tableData: [],
       loading: true,
       formData: {},
-      showDialog: false,
+      dialogVisible: false,
       dialogtitle: ''
     }
   },
@@ -132,7 +137,7 @@ export default {
     addStu () {
       this.formData = {}
       this.dialogtitle = '新增'
-      this.showDialog = true
+      this.dialogVisible = true
     },
     submit () {
       this.showDialog = false
@@ -168,5 +173,12 @@ export default {
   margin: 2%;
   width: 100%;
   border-radius: 20px
+}
+.card-header{
+  height:50px
+}
+
+.block{
+  padding-top: 10px;
 }
 </style>

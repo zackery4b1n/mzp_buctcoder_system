@@ -7,11 +7,11 @@ import { toggleDark } from "~/composables";
     <RouterLink to="/" class="custom-link">
       <el-menu-item index="1" class="menu-root-item">首页</el-menu-item>
     </RouterLink>
-    <RouterLink to="/1" class="custom-link">
-      <el-menu-item index="2" class="menu-root-item">首页2</el-menu-item>
+    <RouterLink to="/stuInfo" class="custom-link">
+      <el-menu-item index="2" class="menu-root-item">学生信息</el-menu-item>
     </RouterLink>
-    <RouterLink to="/SelectAll" class="custom-link">
-      <el-menu-item index="3" class="menu-root-item">所有数据</el-menu-item>
+    <RouterLink to="/gameInfo" class="custom-link">
+      <el-menu-item index="3" class="menu-root-item">比赛信息</el-menu-item>
     </RouterLink>
     <el-menu-item h="full" @click="toggleDark()" class="menu-root-item">
       <button
@@ -21,14 +21,14 @@ import { toggleDark } from "~/composables";
         <i inline-flex i="dark:ep-moon ep-sunny" />
       </button>
     </el-menu-item>
-    <RouterLink to="/3" class="custom-link">
-      <el-menu-item index="4" class="menu-root-item">首页4</el-menu-item>
+    <RouterLink to="/stuScore" class="custom-link">
+      <el-menu-item index="4" class="menu-root-item">学生分数</el-menu-item>
     </RouterLink>
-    <RouterLink to="/4" class="custom-link">
-      <el-menu-item index="5" class="menu-root-item">首页5</el-menu-item>
+    <RouterLink to="/figure" class="custom-link">
+      <el-menu-item index="5" class="menu-root-item">图表</el-menu-item>
     </RouterLink>
-    <RouterLink to="/StuInfo" class="custom-link">
-      <el-menu-item index="6" class="menu-root-item">学生信息</el-menu-item>
+    <RouterLink to="/about" class="custom-link">
+      <el-menu-item index="6" class="menu-root-item">关于</el-menu-item>
     </RouterLink>   
   </el-menu>
 </template>
@@ -40,10 +40,14 @@ import { toggleDark } from "~/composables";
 }
 
 .menu-root-item {
-  width: 120px; /* 调整为你希望的宽度 */
+  width: 120px; 
+  justify-content: center;
+  margin:0%;
 }
 
 .custom-link {
   text-decoration: none;
+  width: 120px;
+  justify-content: center;
 }
 </style>
