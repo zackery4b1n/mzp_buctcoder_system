@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <span class="ml-3 w-35 text-gray-600 inline-flex items-center" style="flex:15">用户列表</span>
+          <span class="ml-3 w-35  inline-flex items-center" style="flex:15">用户列表</span>
           <el-input v-model="input" placeholder="请输入" style="flex:8"/>
           <el-button type="primary" style="flex:1">搜索</el-button>
           <el-button type="primary" style="flex:1" @click="addStu">新增用户</el-button>
@@ -15,11 +15,11 @@
         <el-table-column prop="stuClass" label="stuClass" ></el-table-column>
         <el-table-column prop="stuAcId" label="stuAcId" ></el-table-column>
         <el-table-column prop="stuCfId" label="stuCfId" ></el-table-column>
-        <el-table-column  label="操作" width="250px">
-          <el-row>
+        <el-table-column label="操作" width="250px">
+          <template #default="scope">
             <el-button @click="handleEdit(scope.row)" type="primary" style="width:15px">编辑</el-button>
             <el-button @click="handleDel(scope.row)" type="primary" style="width:15px">删除</el-button>
-          </el-row>
+          </template>
         </el-table-column>
       </el-table>
       <div class="block">
@@ -57,7 +57,7 @@
       </el-form>
       <span slot="footer">
         <el-button @click="submit"> 确认</el-button>
-        <el-button @click="showDialog=false"> 取消</el-button>
+        <el-button @click="dialogVisible=false"> 取消</el-button>
       </span>
     </el-dialog>
     </el-card>
@@ -66,6 +66,7 @@
 
 <script>
 import axios from 'axios'
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   data () {
     return {
@@ -107,20 +108,19 @@ export default {
     },
     handleEdit (data) {
       this.dialogtitle = '编辑'
-
-      this.showDialog = true
+      this.dialogVisible = true
       this.formData = {
         ...data
       }
     },
     handleDel (data) {
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+      ElMessageBox.confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        this.$axios('/stu/info/acmer/student/remove/' + data.stuNo).then((res) => {
+        axios('/stu/info/acmer/student/remove/' + data.stuNo).then((res) => {
           this.getInfo()
           this.$message({
             type: 'success',
@@ -140,14 +140,14 @@ export default {
       this.dialogVisible = true
     },
     submit () {
-      this.showDialog = false
+      this.dialogVisible = false
       if (this.dialogtitle === '新增') {
-        this.$axios.post('/stu/info/acmer/student/insert', this.formData).then(res => {
+        axios.post('/stu/info/acmer/student/insert', this.formData).then(res => {
           console.log(res)
           this.getInfo()
         })
       } else {
-        this.$axios.post('/stu/info/acmer/student/update', this.formData).then(res => {
+        axios.post('/stu/info/acmer/student/update', this.formData).then(res => {
           console.log(res)
           this.getInfo()
         })
