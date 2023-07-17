@@ -1,100 +1,92 @@
 <template>
-  <img src="../assets/sky.png"/> 
-  <div ref="gameContainer"></div>
+  <el-card class="box-card">
+    <h1>打地鼠</h1>
+    <el-button type="primary" v-if="!gameStarted" @click="startGame">开始游戏</el-button>
+    <el-button type="primary" v-else @click="endGame">结束游戏</el-button>
+    <div v-if="gameStarted">
+      <WhackAMoleGame :gameTime="gameTime" :moleImages="moleImages" @moleHit="updateScore" @missedHit="handleMissedHit" @gameOver="handleGameOver" />
+      <p v-if="gameOver">游戏结束! 您的得分: {{ score }}</p>
+      <p v-else>您的得分: {{ score }}</p>
+    </div>
+    <div v-if="!gameStarted">
+      <p v-if="gameOver">游戏结束! 您的得分: {{ score }}</p>
+      <p v-else>您的得分: {{ score }}</p>
+    </div>
+  </el-card>
+  <el-main class="about">
+    <el-space direction="vertical">
+    <el-text class="atext">在这段生产实习的时光里，我有幸参与了一个令人难以忘怀的项目，我们共同打造了一个完整的前后端Web应用。这个经历不仅让我收获了技术上的成长，更给我留下了一份深深的感动。</el-text>
+    <el-text class="atext">回顾起刚开始的时候，我对这个项目充满了期待和一丝丝的紧张。作为一个实习生，我心里总是有些不安，担心自己无法胜任任务。然而，在整个团队的支持和鼓励下，我渐渐放下了担心，开始全身心地投入到项目中。</el-text>
+    <el-text class="atext">与团队的合作是我最感动的一部分。每天都有无数的问题需要解决，但无论何时，总有一群乐于助人、耐心指导的队友在我身边。他们教会了我如何更好地写出高效、可维护的代码；他们分享了自己的经验和技巧，帮助我克服了一个又一个难题。在这个团队中，我感受到了无私的友情和互相支持的温暖，这让我深深明白，团队的力量是无穷的。</el-text>
+    <el-text class="atext">而整个项目的完成过程更是一次挑战与奇迹的结合。我们面对了各种技术难题和时间紧迫的压力，但团队成员们从不退缩，始终保持着积极的态度。我们一起攻克了一个又一个的难关，一遍又一遍地迭代优化，直到最终呈现出了一个出色的Web应用。这种坚持不懈、追求卓越的精神深深地感动了我。</el-text>
+    <el-text class="atext">通过这个项目，我也意识到了自己的潜力和成长。当我看到自己所写的代码在应用中完美运行时，我感到一种前所未有的成就感。每一行代码都是我思考和努力的结晶，它们汇聚成了一个有用的、实用的工具。这个成就感让我更加坚定了自己在编程领域的热爱和追求。</el-text>
+    <el-text class="atext">最后，我要衷心感谢这个团队给予我的机会和信任。没有你们的支持和鼓励，我无法完成这个项目，也无法获得如此宝贵的经验和成长。我深深感激每一个在这个项目中陪伴我成长的人，你们的付出和帮助让我终身难忘。</el-text>
+    <el-text class="atext">这段生产实习的经历不仅仅是一次项目经验，更是一段感动和成长的旅程。我相信，无论将来我身处何方，这份感动和收获将一直伴随着我，激励着我不断追求卓越、勇往直前。谢谢这个团队，谢谢这段难忘的时光！</el-text>
+    </el-space>
+  </el-main>
 </template>
 
 <script>
-import Phaser from 'phaser';
-
+import { Bell, ElementPlus } from '@element-plus/icons-vue'
+import WhackAMoleGame from './WhackAMoleGame.vue';
+import m1 from '../assets/m1.jpg';
+import m2 from '../assets/m2.jpg';
+import m3 from '../assets/m3.jpg';
+import m4 from '../assets/m4.jpg';
 export default {
-  mounted() {
-    const config = {
-      type: Phaser.AUTO,
-      parent: this.$refs.gameContainer,
-      width: 800,
-      height: 600,
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { y: 200 }
-        }
-      },
-      scene: {
-        preload: this.preload,
-        create: this.create
-      }
+  components: {
+    WhackAMoleGame,
+  },
+  data() {
+    return {
+      gameStarted: false,
+      gameOver: false,
+      score: 0,
+      gameTime: 30, // 游戏时间（单位：秒）
+      moleImages: [
+        m1,m2,m3,m4,
+      ],
     };
-
-    new Phaser.Game(config);
   },
   methods: {
-    preload() {
-      this.load.image('sky', '../assets/sky.png');
-      this.load.image('ground', '../assets/platform.jpg');
-      this.load.image('star', '../assets/star.jpg');
-      this.load.image('bomb', '../assets/bomb.png');
-      this.load.spritesheet('dude', '../assets/dude.jpg', { frameWidth: 32, frameHeight: 48 });
+    startGame() {
+      this.gameStarted = true;
+      this.gameOver = false;
+      this.score = 0;
     },
-    create() {
-      this.add.image(400, 300, 'sky');
-
-      const platforms = this.physics.add.staticGroup();
-
-      platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-      platforms.create(600, 400, 'ground');
-      platforms.create(50, 250, 'ground');
-      platforms.create(750, 220, 'ground');
-
-      const player = this.physics.add.sprite(100, 450, 'dude');
-
-      player.setBounce(0.2);
-      player.setCollideWorldBounds(true);
-
-      this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-      });
-
-      this.anims.create({
-        key: 'turn',
-        frames: [{ key: 'dude', frame: 4 }],
-        frameRate: 20
-      });
-
-      this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-      });
-
-      this.physics.add.collider(player, platforms);
-
-      const cursors = this.input.keyboard.createCursorKeys();
-
-      cursors.left.on('down', () => {
-        player.setVelocityX(-160);
-        player.anims.play('left', true);
-      });
-
-      cursors.right.on('down', () => {
-        player.setVelocityX(160);
-        player.anims.play('right', true);
-      });
-
-      cursors.up.on('down', () => {
-        if (player.body.touching.down) {
-          player.setVelocityY(-330);
-        }
-      });
-    }
-  }
+    endGame() {
+      this.gameStarted = false;
+    },
+    updateScore() {
+      this.score += 1;
+    },
+    handleMissedHit() {
+      this.endGame();
+      this.gameOver = true;
+    },
+    handleGameOver() {
+      this.gameOver = true;
+    },
+  },
 };
 </script>
 
-<style scoped>
-/* 可选的样式规则 */
+<style>
+.box-card {
+  margin: 10px;
+  width: 100%;
+  border-radius: 20px;
+}
+.about{
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.atext{
+  text-align: left;
+  font-family: "KaiTi";
+  text-indent: 2em;
+  font-size:10px;
+  font-style: italic;
+}
 </style>

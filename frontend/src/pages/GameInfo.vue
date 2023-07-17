@@ -9,12 +9,10 @@
           <el-button type="primary" style="flex:1" @click="addStu">刷新</el-button>
         </div>
       </template>
-      <el-table :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" stripe border style="width: 100%" v-loading="loading">
-        <el-table-column prop="stuNo" label="stuNo" width="120"></el-table-column>
-        <el-table-column prop="stuName" label="stuName" ></el-table-column>
-        <el-table-column prop="stuClass" label="stuClass" ></el-table-column>
-        <el-table-column prop="stuAcId" label="stuAcId" ></el-table-column>
-        <el-table-column prop="stuCfId" label="stuCfId" ></el-table-column>
+      <el-table :data="tableData" stripe border style="width: 100%" v-loading="loading">
+        <el-table-column prop="cname" label="比赛名称" ></el-table-column>
+        <el-table-column prop="stime" label="开始时间" ></el-table-column>
+        <el-table-column prop="ltime" label="持续时间" ></el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -25,35 +23,6 @@
           @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
-    <el-dialog
-      v-model="dialogVisible"
-      :title="dialogtitle" style="border-radius: 30px;">
-      <el-form
-        label-width="120px"
-        ref="ruleFormRef"
-        :model="formData"
-      >
-        <el-form-item label="学号">
-          <el-input :disabled="dialogtitle==='编辑'" v-model="formData.stuNo"></el-input>
-        </el-form-item>
-        <el-form-item label="名字">
-          <el-input  v-model="formData.stuName"></el-input>
-        </el-form-item>
-        <el-form-item label="班级">
-          <el-input  v-model="formData.stuClass"></el-input>
-        </el-form-item>
-        <el-form-item label="Atcoder账号">
-          <el-input  v-model="formData.stuAcId"></el-input>
-        </el-form-item>
-        <el-form-item label="Codeforces账号">
-          <el-input  v-model="formData.stuCfId"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer">
-        <el-button @click="submit"> 确认</el-button>
-        <el-button @click="dialogVisible=false"> 取消</el-button>
-      </span>
-    </el-dialog>
     </el-card>
   </el-container>
   <el-container class="container">
@@ -67,11 +36,9 @@
         </div>
       </template>
       <el-table :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" stripe border style="width: 100%" v-loading="loading">
-        <el-table-column prop="stuNo" label="stuNo" width="120"></el-table-column>
-        <el-table-column prop="stuName" label="stuName" ></el-table-column>
-        <el-table-column prop="stuClass" label="stuClass" ></el-table-column>
-        <el-table-column prop="stuAcId" label="stuAcId" ></el-table-column>
-        <el-table-column prop="stuCfId" label="stuCfId" ></el-table-column>
+        <el-table-column prop="cname" label="比赛名称" ></el-table-column>
+        <el-table-column prop="stime" label="开始时间" ></el-table-column>
+        <el-table-column prop="ltime" label="持续时间" ></el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -82,35 +49,6 @@
           @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
-    <el-dialog
-      v-model="dialogVisible"
-      :title="dialogtitle" style="border-radius: 30px;">
-      <el-form
-        label-width="120px"
-        ref="ruleFormRef"
-        :model="formData"
-      >
-        <el-form-item label="学号">
-          <el-input :disabled="dialogtitle==='编辑'" v-model="formData.stuNo"></el-input>
-        </el-form-item>
-        <el-form-item label="名字">
-          <el-input  v-model="formData.stuName"></el-input>
-        </el-form-item>
-        <el-form-item label="班级">
-          <el-input  v-model="formData.stuClass"></el-input>
-        </el-form-item>
-        <el-form-item label="Atcoder账号">
-          <el-input  v-model="formData.stuAcId"></el-input>
-        </el-form-item>
-        <el-form-item label="Codeforces账号">
-          <el-input  v-model="formData.stuCfId"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer">
-        <el-button @click="submit"> 确认</el-button>
-        <el-button @click="dialogVisible=false"> 取消</el-button>
-      </span>
-    </el-dialog>
     </el-card>
   </el-container>
 </template>
@@ -136,22 +74,17 @@ export default {
   },
   methods: {
     getInfo () {
-      axios.get('/stu/info/acmer/student/all/1/100').then(res => {
-        if (res.data.code === 200) {
+      axios.get('/stu/info/acmer/competitioninformation/notStarted').then(res => {
           this.loading = false
-          const msgInfo = res.data.data.records
+          const msgInfo = res.data
           this.tableData = []
           for (const item in msgInfo) {
             this.tableData.push({
-              stuNo: msgInfo[item].stuNo,
-              stuName: msgInfo[item].stuName,
-              stuClass: msgInfo[item].stuClass,
-              stuAcId: msgInfo[item].stuAcId,
-              stuCfId: msgInfo[item].stuCfId
+              cname: msgInfo[item].name,
+              stime: msgInfo[item].time,
+              ltime: msgInfo[item].formattedDuration,
             })
           }
-          this.totalNum = this.tableData.length
-        }
       })
     },
     handleCurrentChange (val) {
