@@ -1,6 +1,6 @@
 <template>
   <el-container class="section">
-    <el-card class="box-card" v-loading="loading_3">
+    <el-card class="box-card" v-loading="loading">
         <template #header>
           <div class="card-header">
             <span>codeforces</span>
@@ -21,14 +21,26 @@
         ></el-pagination>
       </div>
     </el-card>
-    <el-card class="box-card" v-loading="loading_4">
+    <el-card class="box-card" v-loading="loading2">
         <template #header>
           <div class="card-header">
             <span>atcoder</span>
             <el-button class="button" @click="reflesh_4" text>刷新</el-button>
           </div>
         </template>
-        <div v-for="item in items" :key="item.id" class="text item">{{ item.name }} - {{ item.description }}</div>
+        <el-table :data="tableData2.slice((currentPage - 1) * pageSize, currentPage * pageSize)"  stripe style="width: 100%" v-loading="loading2" :row-class-name="tableRowClassName">
+          <el-table-column prop="id" label="id"></el-table-column>
+          <el-table-column prop="score" label="score"></el-table-column>
+        </el-table>
+      <div class="block2">
+        <el-pagination
+          layout="prev, pager, next"
+          :total="totalNum"
+          :page-size="pageSize"
+          :current-page="currentPage"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
     </el-card>
   </el-container>
 </template>
@@ -40,9 +52,12 @@ export default {
       return {
         pageSize: 12, // 表示一页多少条数据
         totalNum: 0,
+        totalNum2: 0,
         currentPage: 1,
         tableData: [],
-        loading: true
+        tableData2: [],
+        loading: true,
+        loading2: true
       }
     },
     created () {
@@ -50,14 +65,27 @@ export default {
     },
     methods: {
       getInfo () {
-        axios.get('/stu/info/acmer/codeforces/all/1/100').then(res => {
+        axios.get('/stu/info/acmer/student/score/1/100').then(res => {
+          if (res.data.code === 200) {
+            this.loading2 = false
+            const msgInfo = res.data.data
+            for (const item in msgInfo) {
+              this.tableData2.push({
+                id: msgInfo[item].name,
+                score: msgInfo[item].rating,
+              })
+            }
+            this.totalNum2 = this.tableData2.length
+          }
+        })
+        axios.get('/stu/info/acmer/student/name_rating/1/100').then(res => {
           if (res.data.code === 200) {
             this.loading = false
-            const msgInfo = res.data.data.records
+            const msgInfo = res.data.data
             for (const item in msgInfo) {
               this.tableData.push({
-                id: msgInfo[item].cfId,
-                score: msgInfo[item].cfNewRating,
+                id: msgInfo[item].name,
+                score: msgInfo[item].cfRating,
               })
             }
             this.totalNum = this.tableData.length
