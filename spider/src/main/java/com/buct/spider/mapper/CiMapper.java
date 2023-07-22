@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author BUCT
- * @since 2023-07-13
+ * @since 2023-07-16
  */
 @Mapper
 public interface CiMapper extends BaseMapper<Ci> {
