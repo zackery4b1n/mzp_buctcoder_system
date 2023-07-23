@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.time.LocalDateTime;
+
 @Component
 public class GetCfData {
 
@@ -66,28 +66,36 @@ public class GetCfData {
             }
         }
     }
-    public void getlist(){
+   /* public void getlist(){
         String data=HttpRequest.sendGet("https://codeforces.com/api/contest.list?gym=true");
         JSONObject dataJsonobject=JSONObject.parseObject(data);
         JSONArray result = dataJsonobject.getJSONArray("result");
         for(int i=0;i<result.size();i++) {
             JSONObject contestJson = result.getJSONObject(i);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String contestPlatform="CF";
             String contestName=contestJson.getString("name");
             String contestLink="https://codeforces.com/contest/"+contestJson.getString("id");
+
+
+
+            String contestStartTimeSeconds = simpleDateFormat.format(new Date(contestJson.getLong("startTimeSeconds") * 1000));
             Integer contestStartingTime = contestJson.getInteger("startTimeSeconds");
             Integer contestClosingTime=contestJson.getInteger("durationSeconds");
-            LocalDateTime StartingTime = LocalDateTime.ofEpochSecond(contestStartingTime, 0, null);
-            LocalDateTime ClosingTime = LocalDateTime.ofEpochSecond(contestClosingTime, 0, null);
-
+            Integer durationSeconds = contestJson.getInteger("durationSeconds");
+            Integer hour = durationSeconds / 60 / 60;
+            Integer minutes = durationSeconds / 60 % 60;
+            Integer seconds = durationSeconds % 60;
+            String contestDurationSeconds = hour+":"+minutes+":"+seconds;
+            Integer contestRelativeTimeSeconds = contestJson.getInteger("relativeTimeSeconds");
+            Integer contestParticipantsnumber = 0;
 
 
             Ci ci=new Ci();
             ci.setPlatform(contestPlatform);
             ci.setLink(contestLink);
             ci.setName(contestName);
-            ci.setStartingTime(StartingTime);
+            ci.setStartingTime(contestStartingTime);
             ci.setStartingTime(ClosingTime);
 
             QueryWrapper<Ci> queryWrapper = new QueryWrapper<>();
@@ -101,6 +109,50 @@ public class GetCfData {
 
         }
 
+    }*/
+    public void getlist() {
+        String data = HttpRequest.sendGet("https://codeforces.com/api/contest.list?gym=false");
+        JSONObject jsonObject = JSONObject.parseObject(data);
+        JSONArray result = jsonObject.getJSONArray("result");
+
+// 遍历竞赛列表
+        for(int i = 0; i < result.size(); i++) {
+            JSONObject contestJson = result.getJSONObject(i);
+
+// 解析竞赛数据
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String contestPlatform="CF";
+            String contestId = "https://codeforces.com/api/contest"+contestJson.getString("id");
+            String contestName = contestJson.getString("name");
+            String contestStartTimeSeconds = simpleDateFormat.format(new Date(contestJson.getLong("startTimeSeconds") * 1000));
+            Integer durationSeconds = contestJson.getInteger("durationSeconds");
+            Integer hour = durationSeconds / 60 / 60;
+            Integer minutes = durationSeconds / 60 % 60;
+            Integer seconds = durationSeconds % 60;
+            String contestDurationSeconds = hour+":"+minutes+":"+seconds;
+            Integer contestRelativeTimeSeconds = contestJson.getInteger("relativeTimeSeconds");
+            String contestClosingTime=simpleDateFormat.format(new Date((contestJson.getLong("durationSeconds")+contestJson.getLong("startTimeSeconds"))* 1000));
+
+
+// 创建竞赛对象并设置数据
+            Ci ci=new Ci();
+            ci.setName(contestName);
+            ci.setStartingTime(contestStartTimeSeconds);
+            ci.setClosingTime(contestClosingTime);
+            ci.setLink(contestId);
+            ci.setPlatform(contestPlatform);
+
+// 存入数据库
+            QueryWrapper<Ci> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("starting_time", contestStartTimeSeconds);
+            Ci exist = ciMapper.selectOne(queryWrapper);
+            if(exist==null){
+                ciMapper.insert(ci);
+            }else {
+               ciMapper.update(ci,queryWrapper);
+            }
+
+        }
     }
 
 }
